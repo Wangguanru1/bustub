@@ -36,7 +36,7 @@ auto Trie::Get(std::string_view key) const -> const T * {
 template <class T>
 auto Trie::Put(std::string_view key, T value) const -> Trie {
   int len = key.length();
-  //如果value是unique_ptr类型，函数调用后value=nullptr
+  // 如果value是unique_ptr类型，函数调用后value=nullptr
   auto val = std::make_shared<T>(std::move(value));
 
   std::shared_ptr<TrieNode> root = root_ == nullptr ? std::make_shared<TrieNode>() : root_->Clone();
@@ -73,7 +73,7 @@ auto Trie::Put(std::string_view key, T value) const -> Trie {
 }
 
 auto Trie::Remove(std::string_view key) const -> Trie {
-  //std::move(root_->Clone) goes wrong
+  // std::move(root_->Clone) goes wrong
   std::shared_ptr<TrieNode> root = root_ == nullptr ? std::make_shared<TrieNode>() : root_->Clone();
 
   std::shared_ptr<TrieNode> ptr = root;
@@ -99,7 +99,7 @@ auto Trie::Remove(std::string_view key) const -> Trie {
   if (ptr->children_.empty() || !ptr->children_[key.back()]->is_value_node_) {
     return {};
   }
-  // ptr指向nodewithvalue,先将其转成trienode
+
   ptr->children_[key.back()] = std::make_shared<TrieNode>(ptr->children_[key.back()]->children_);
 
   int n = vec.size();
