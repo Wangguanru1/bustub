@@ -5,14 +5,12 @@ namespace bustub {
 
 BasicPageGuard::BasicPageGuard(BasicPageGuard &&that) noexcept {
   bpm_ = that.bpm_;
-  Page *temp = page_;
+  if (page_ != nullptr) {
+    this->Drop();
+  }
   page_ = that.page_;
   is_dirty_ = that.is_dirty_;
   is_dropped_ = that.is_dropped_;
-  if (temp == that.page_) {
-    that.Drop();
-    return;
-  }
   that.is_dropped_ = true;
 }
 
@@ -26,7 +24,6 @@ void BasicPageGuard::Drop() {
 
 auto BasicPageGuard::operator=(BasicPageGuard &&that) noexcept -> BasicPageGuard & {
   bpm_ = that.bpm_;
-
   if (page_ != nullptr) {
     this->Drop();
   }
